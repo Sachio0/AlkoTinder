@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Extensions;
+using Application.Interfaces;
+using Infrastracture;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.FlowAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +38,10 @@ namespace API
             opt.AddPolicy("CorsPolicy", 
             policy => policy.AllowAnyMethod().AllowAnyHeader()
             .WithOrigins((string)(Configuration.GetValue(typeof(string),"Client")))));
+            //services.AddMediatR(typeof(List.Handler).Assembly);
+            //services.AddMvc().AddFluentValidation(cfg => cfg.)
             services.AddIdentityServices(Configuration);
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
